@@ -1,0 +1,85 @@
+---
+
+- name: Verify license is provided
+  fail:
+    msg: "You must provide a license via bigiq_onboard_license_key"
+  when: "bigiq_onboard_license_key == ''"
+
+- name: Request to license device
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/shared/licensing/activation"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      baseRegKey: "{{ bigiq_onboard_license_key }}"
+      addOnKeys: []
+      activationMethod: AUTOMATIC
+    body_format: json
+
+- name: Request license status
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/shared/licensing/activation"
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: status
+  until: status.json.status in ['LICENSING_COMPLETE', 'LICENSING_FAILED', 'NEED_EULA_ACCEPT']
+  retries: 5
+
+- name: Stop if licensing failed
+  fail:
+    msg: Failed to license the device
+  when: status.json.status == 'LICENSING_FAILED'
+
+- name: Send EULA if requested
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/shared/licensing/activation"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      baseRegKey: "{{ bigiq_onboard_license_key }}"
+      addOnKeys: []
+      activationMethod: AUTOMATIC
+      eulaText: "{{ status.json.eulaText }}"
+    body_format: json
+  when: status.json.status == 'NEED_EULA_ACCEPT'
+
+- name: Request license status, with EULA
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/shared/licensing/activation"
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: status
+  until: status.json.status in ['LICENSING_COMPLETE', 'LICENSING_FAILED']
+  retries: 5
+
+- name: Stop if EULA sending failed
+  fail:
+    msg: Failed to license the device
+  when: status.json.status != 'LICENSING_COMPLETE'
+
+- name: Stop if license text was not generated
+  fail:
+    msg: Failed to generate license text
+  when: status.json.licenseText == ''
+
+- name: Put license on device
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/shared/licensing/registration"
+    method: PUT
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      licenseText: "{{ status.json.licenseText }}"
+    body_format: json

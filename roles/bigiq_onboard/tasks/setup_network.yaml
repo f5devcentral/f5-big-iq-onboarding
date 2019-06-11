@@ -1,0 +1,58 @@
+---
+- name: sleep for 5 seconds and continue with play
+  wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+
+- name: create discovery network VLAN
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/net/vlan"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body: "{{ lookup('file','create_discovery_vlan.json') }}"
+    body_format: json
+
+- name: sleep for 5 seconds and continue with play
+  wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+- name: show discovery network VLAN
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/net/vlan/~Common~discovery/interfaces"
+    method: GET
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+
+- name: create body variable
+  template: src="{{role_path}}/templates/create_self_discovery_template.json" dest="{{role_path}}/templates/{{ ansible_host }}_declared.json"
+  delegate_to: localhost
+
+- name: show created file content 
+  debug:
+    msg: "{{ lookup('file','{{role_path}}/templates/{{ ansible_host }}_declared.json') }}"
+
+- name: create discovery selfIP
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/net/self"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body: "{{ lookup('file','{{role_path}}/templates/{{ ansible_host }}_declared.json') }}"
+    body_format: json
+
+- name: sleep for 5 seconds and continue with play
+  wait_for:
+    timeout: 5
+  delegate_to: localhost
+
+
+

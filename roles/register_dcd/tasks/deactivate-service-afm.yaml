@@ -1,0 +1,43 @@
+---
+
+- name: De-activate Network Security service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/firewall/tasks/remove-afm-listener"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: afm
+      deviceReference:
+        link: "shared/resolver/device-groups/cm-afmevents-allLoggingNodes/devices/{{ device_id }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: dsafm
+  changed_when: dsafm.status in [200, 202]
+  until: dsafm.status in [200, 202]
+  retries: 120
+  delay: 2
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ dsafm.json.id }}"
+
+- name: Wait for Network Security service de-activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/firewall/tasks/remove-afm-listener/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: dsafm1
+  changed_when: dsafm1.status == 200
+  retries: 120
+  until: dsafm1.json.status in ['FINISHED', 'FAILED'] or dsafm1.status == 404
+  delay: 2
+
+- name: Fail if Network Security service de-activation failed
+  fail:
+    msg: "Network Security service de-activation failed with: {{ dsafm1 }}"
+  when: dsafm1.json.status == 'FAILED'

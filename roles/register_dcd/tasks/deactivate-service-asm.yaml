@@ -1,0 +1,43 @@
+---
+
+- name: De-activate Web Application Security service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/asm/tasks/remove-syslog-listener"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: asm
+      deviceReference:
+        link: "shared/resolver/device-groups/cm-asm-allLoggingNodes/devices/{{ device_id }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: dsasm
+  changed_when: dsasm.status in [200, 202]
+  until: dsasm.status in [200, 202]
+  retries: 120
+  delay: 2
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ dsasm.json.id }}"
+
+- name: Wait for Web Application Security service de-activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/asm/tasks/remove-syslog-listener/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: dsasm1
+  changed_when: dsasm1.status == 200
+  retries: 120
+  until: dsasm1.json.status in ['FINISHED', 'FAILED'] or dsasm1.status == 404
+  delay: 2
+
+- name: Fail if Web Application Security service de-activation failed
+  fail:
+    msg: "Web Application Security service de-activation failed with: {{ dsasm1 }}"
+  when: dsasm1.json.status == 'FAILED'

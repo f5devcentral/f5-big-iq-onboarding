@@ -1,0 +1,44 @@
+---
+
+- name: Activate Network Security service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/firewall/tasks/add-afm-listener"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: afm
+      listenerInterfaceAddress: "{{ register_dcd_listener }}"
+      deviceReference:
+        link: "{{ device_ref }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: asafm
+  changed_when: asafm.status in [200, 202]
+  until: asafm.status in [200, 202] or 'Only one task can be created at a time' not in asafm.json.message
+  retries: 120
+  delay: 2
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ asafm.json.id }}"
+
+- name: Wait for Network Security service activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/firewall/tasks/add-afm-listener/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: asafm1
+  changed_when: asafm1.status == 200
+  retries: 120
+  until: asafm1.json.status in ['FINISHED', 'FAILED'] or asafm1.status == 404
+  delay: 2
+
+- name: Fail if Network Security service activation failed
+  fail:
+    msg: "Network Security service activation failed with: {{ asafm1 }}"
+  when: asafm1.json.status == 'FAILED'
