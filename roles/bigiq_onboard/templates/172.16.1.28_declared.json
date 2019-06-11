@@ -1,8 +1,0 @@
-{
-    "name": "self_discovery",
-    "address": "172.16.128.28/17",
-    "vlan": "/Common/discovery",
-    "description": "",
-    "fullPath": "/Common/self_discovery",
-    "allow-service": "default"
-}
