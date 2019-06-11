@@ -1,5 +1,0 @@
-sudo docker run --rm -it \
-  -v ~/.ssh:/root/.ssh \
-  -v $(pwd):/ansible \
-  -v /var/log/ansible/ansible.log \
-  f5-bigiq-onboarding "$@"
