@@ -1,0 +1,8 @@
+{
+    "name": "self_discovery",
+    "address": "{{ bigiq_onboard_discovery_address }}",
+    "vlan": "/Common/discovery",
+    "description": "",
+    "fullPath": "/Common/self_discovery",
+    "allow-service": "default"
+}

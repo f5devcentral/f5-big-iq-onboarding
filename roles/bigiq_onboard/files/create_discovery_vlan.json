@@ -1,0 +1,13 @@
+{
+    "name": "discovery",
+    "tag": 0,
+    "mtu": 1500,
+    "interfacesReference": {
+        "items": [
+            {
+                "name": "1.1",
+                "untagged": true
+            }
+        ]
+    }
+}

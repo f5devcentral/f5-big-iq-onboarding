@@ -1,0 +1,27 @@
+---
+
+# Enabling basic-auth is generally not recommended. However, the common
+# use-case for doing this is to make Postman easier to use during development
+# and testing because there will be no need to get a token to use the API.
+
+- name: Check if basic-auth is set
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/authn/basic-auth"
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: r
+
+- name: Enable basic auth
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/authn/basic-auth"
+    method: PUT
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      isEnabled: true
+    body_format: json
+  when: not r.json.isEnabled|bool

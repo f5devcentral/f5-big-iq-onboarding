@@ -1,0 +1,13 @@
+---
+
+- name: Mark that system is setup
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/system/setup"
+    method: PATCH
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      isSystemSetup: true
+    body_format: json

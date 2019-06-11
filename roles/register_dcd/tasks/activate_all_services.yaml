@@ -1,0 +1,84 @@
+---
+
+- name: Set the device reference fact
+  set_fact:
+    device_ref: "{{ rdcd.json['items'][0].selfLink }}"
+    device_id: "{{ rdcd.json['items'][0].selfLink|basename }}"
+    has_afm_service: "{{ 'cm:afm:logging:module' in rdcd.json['items'][0].properties }}"
+    has_access_service: "{{ 'cm:access:logging:module' in rdcd.json['items'][0].properties }}"
+    has_dos_service: "{{ 'cm:dos:logging:module' in rdcd.json['items'][0].properties }}"
+    has_websafe_service: "{{ 'cm:websafe:logging:module' in rdcd.json['items'][0].properties }}"
+    has_ipsec_service: "{{ 'cm:ipsec:logging:module' in rdcd.json['items'][0].properties }}"
+    has_asm_service: "{{ 'cm:asm:logging:module' in rdcd.json['items'][0].properties }}"
+
+- name: include access sevices
+  include_tasks: activate-service-access.yaml
+  when:
+    - "'access' in register_dcd_services"
+    - not has_access_service|bool
+
+- name: deactivate access sevices
+  include_tasks: deactivate-service-access.yaml
+  when:
+    - "'access' not in register_dcd_services"
+    - has_access_service|bool
+
+- name: include afm sevices
+  include_tasks: activate-service-afm.yaml
+  when:
+    - "'afm' in register_dcd_services"
+    - not has_afm_service|bool
+
+- name: deactivate afm sevices
+  include_tasks: deactivate-service-afm.yaml
+  when:
+    - "'afm' not in register_dcd_services"
+    - has_afm_service|bool
+
+- name: include asm sevices
+  include_tasks: activate-service-asm.yaml
+  when:
+    - "'asm' in register_dcd_services"
+    - not has_asm_service|bool
+
+- name: deactivate asm sevices
+  include_tasks: deactivate-service-asm.yaml
+  when:
+    - "'asm' not in register_dcd_services"
+    - has_asm_service|bool
+
+- name: include dos sevices
+  include_tasks: activate-service-dos.yaml
+  when:
+    - "'dos' in register_dcd_services"
+    - not has_dos_service|bool
+
+- name: deactivate dos sevices
+  include_tasks: deactivate-service-dos.yaml
+  when:
+    - "'dos' not in register_dcd_services"
+    - has_dos_service|bool
+
+- name: include ipsec sevices
+  include_tasks: activate-service-ipsec.yaml
+  when:
+    - "'ipsec' in register_dcd_services"
+    - not has_ipsec_service|bool
+
+- name: deactivate dos sevices
+  include_tasks: deactivate-service-ipsec.yaml
+  when:
+    - "'ipsec' not in register_dcd_services"
+    - has_ipsec_service|bool
+
+- name: include websafe sevices
+  include_tasks: activate-service-websafe.yaml
+  when:
+    - "'websafe' in register_dcd_services"
+    - not has_websafe_service|bool
+
+- name: deactivate websafe sevices
+  include_tasks: deactivate-service-websafe.yaml
+  when:
+    - "'websafe' not in register_dcd_services"
+    - has_websafe_service|bool

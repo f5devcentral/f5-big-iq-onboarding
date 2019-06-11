@@ -1,0 +1,43 @@
+---
+
+- name: De-activate IPsec service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/adc-core/tasks/remove-listener"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: ipsec
+      deviceReference:
+        link: "shared/resolver/device-groups/cm-adccore-allLoggingNodes/devices/{{ device_id }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: dsips
+  changed_when: dsips.status in [200, 202]
+  until: dsips.status in [200, 202]
+  retries: 120
+  delay: 2
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ dsips.json.id }}"
+
+- name: Wait for IPsec service de-activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/adc-core/tasks/remove-listener/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: dsips1
+  changed_when: dsips1.status == 200
+  retries: 120
+  until: dsips1.json.status in ['FINISHED', 'FAILED'] or dsips1.status == 404
+  delay: 2
+
+- name: Fail if IPsec service de-activation failed
+  fail:
+    msg: "IPsec service de-activation failed with: {{ dsips1 }}"
+  when: dsips1.json.status == 'FAILED'
