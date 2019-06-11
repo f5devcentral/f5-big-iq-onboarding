@@ -1,0 +1,19 @@
+---
+
+- name: Check that node type value is valid
+  fail:
+    msg: "bigiq_onboard_node_type value must be either 'cm' or 'dcd'"
+  when: bigiq_onboard_node_type not in ['cm', 'dcd']
+
+- name: Provision type on device
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/system/provisioning"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      systemPersonality: logging_node
+    body_format: json
+  when: bigiq_onboard_node_type == 'dcd'

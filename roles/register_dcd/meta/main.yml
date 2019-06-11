@@ -1,0 +1,18 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: register_dcd
+  author: caphrim007
+  description: Performs a series of steps to a DCD BIG-IQ system to a CM BIG-IQ system.
+  company: F5 Networks
+  license: Apache
+  min_ansible_version: 2.7
+  platforms:
+    - name: BIG-IQ
+      versions:
+        - 6.0.1
+  galaxy_tags:
+    - f5
+    - networking
+    - bigiq

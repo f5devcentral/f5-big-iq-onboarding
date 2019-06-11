@@ -1,0 +1,97 @@
+---
+
+dependency:
+  name: galaxy
+  options:
+    role-file: molecule/resources/requirements.yml
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/resources/yaml-lint.yml
+platforms:
+  - name: instance-1
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - cm
+  - name: instance-2
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - dcd
+  - name: instance-3
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - dcd
+  - name: instance-4
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - dcd
+  - name: instance-5
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - dcd
+  - name: instance-6
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    pre_build_image: true
+    groups:
+      - common
+      - dcd
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      retry_files_enabled: false
+      host_key_checking: false
+  inventory:
+    group_vars:
+      common:
+        register_dcd_cm_password: ${F5_CM_PASSWORD:-secret}
+        register_dcd_cm_server: ${F5_CM_DEVICE:-localhost}
+        register_dcd_dcd_user: ${F5_DCD_USER:-admin}
+        register_dcd_dcd_password: ${F5_DCD_PASSWORD:-secret}
+      cm:
+        bigiq_onboard_node_type: cm
+      dcd:
+        bigiq_onboard_node_type: dcd
+    host_vars:
+      instance-1:
+        bigiq_onboard_server: ${F5_SERVER_1:-localhost}
+      instance-2:
+        bigiq_onboard_server: ${F5_SERVER_2:-localhost}
+      instance-3:
+        bigiq_onboard_server: ${F5_SERVER_3:-localhost}
+      instance-4:
+        bigiq_onboard_server: ${F5_SERVER_4:-localhost}
+      instance-5:
+        bigiq_onboard_server: ${F5_SERVER_5:-localhost}
+      instance-6:
+        bigiq_onboard_server: ${F5_SERVER_6:-localhost}
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+scenario:
+  name: multi-node-concurrent
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

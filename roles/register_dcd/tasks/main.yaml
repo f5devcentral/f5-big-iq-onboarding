@@ -1,0 +1,80 @@
+---
+
+- name: Setup provider to connect to CM device
+  set_fact:
+    provider:
+      server: "{{ register_cm_server }}"
+      server_port: "{{ register_cm_server_port }}"
+      user: "{{ register_cm_user }}"
+      password: "{{ register_cm_password }}"
+      validate_certs: "{{ register_cm_validate_certs }}"
+      transport: "{{ register_cm_transport }}"
+
+- name: Wait for BIG-IQ to be available
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/info/system"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+  register: statusavail
+  until: statusavail is success and statusavail.json.available|bool
+  retries: 10
+  delay: 6
+
+- name: Get authentication token
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/authn/login"
+    method: POST
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    body:
+      username: "{{ provider.user }}"
+      password: "{{ provider.password }}"
+    body_format: json
+  register: authtoken
+
+- name: Set the token fact if authentication succeeded
+  set_fact:
+    f5_auth_token: "{{ authtoken.json.token.token }}"
+  when: authtoken is success
+
+- name: Test authentication
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/echo"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: status
+
+- name: Get device provisioning type
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/system/provisioning"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: rprov
+
+- name: Fail if you're running the role against a DCD device
+  fail:
+    msg: "This role should be run against a CM device, but you appear to be running it against a DCD device"
+  when: rprov.json.systemPersonality == 'logging_node'
+
+- name: Check if system is setup
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/shared/system/setup"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: setupchk
+
+- name: Stop if the system is not setup
+  fail:
+    msg: "The CM device has not been setup. Please onboard the DCD device first."
+  when: setupchk.json.isSystemSetup is not defined or not setupchk.json.isSystemSetup|bool
+###
+### the following include task line will perform the register task for every dcd instance that is in the dcd host group
+### There are multiple tasks that need to be done for each dcd, so we have to put them into a dedicated yml file.
+- include_tasks: register_dcd.yml
+  with_items: "{{ groups[bigiq_dcd_groupname] |map('extract', hostvars, ['inventory_hostname']) | list }}"

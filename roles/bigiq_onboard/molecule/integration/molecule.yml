@@ -1,0 +1,45 @@
+---
+
+dependency:
+  name: galaxy
+driver:
+  name: docker
+lint:
+  name: yamllint
+  options:
+    config-file: molecule/default/yaml-lint.yml
+platforms:
+  - name: instance
+    image: geerlingguy/docker-${MOLECULE_DISTRO:-centos7}-ansible
+    command: ${MOLECULE_DOCKER_COMMAND:-"sleep infinity"}
+    privileged: true
+    pre_build_image: true
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      retry_files_enabled: false
+      host_key_checking: false
+  inventory:
+    host_vars:
+      instance:
+        bigiq_onboard_server: ${F5_SERVER:-localhost}
+        bigiq_onboard_user: ${F5_USER:-admin}
+        bigiq_onboard_password: ${F5_PASSWORD:-secret}
+        bigiq_onboard_license_key: ${BIGIQ_ONBOARD_LICENSE_KEY}
+        bigiq_onboard_master_passphrase: ${BIGIQ_ONBOARD_MASTER_PASSPHRASE:-Change!Me!Now!1234}
+        bigiq_onboard_node_type: ${BIGIQ_ONBOARD_NODE_TYPE:-cm}
+        bigiq_onboard_force: ${BIGIQ_ONBOARD_FORCE:-false}
+        bigiq_onboard_set_basic_auth: ${BIGIQ_ONBOARD_SET_BASIC_AUTH:-false}
+  env:
+    ANSIBLE_ROLES_PATH: ../../../
+  lint:
+    name: ansible-lint
+  playbooks:
+    converge: ${MOLECULE_PLAYBOOK:-playbook.yml}
+scenario:
+  name: integration
+verifier:
+  name: testinfra
+  lint:
+    name: flake8

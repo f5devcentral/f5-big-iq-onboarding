@@ -1,0 +1,31 @@
+---
+
+- name: Check if master passphrase is set
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/shared/secure-storage/masterkey"
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: mk
+
+- name: Stop if master passphrase is not defined
+  fail:
+    msg: "A master passphrase must be provided."
+  when: not bigiq_onboard_master_passphrase|default('')|valid_master_passphrase|bool
+
+- name: Set master passphrase
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/shared/secure-storage/masterkey"
+    method: POST
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      passphrase: "{{ bigiq_onboard_master_passphrase }}"
+    body_format: json
+  register: result
+  when: mk.json.isMkSet is not defined or not mk.json.isMkSet|bool
+  notify: Restart device
+  changed_when: result.status == 200

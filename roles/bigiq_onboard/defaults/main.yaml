@@ -1,0 +1,149 @@
+---
+
+### Connection parameters
+bigiq_onboard_server: "{{ ansible_host }}"
+bigiq_onboard_server_port: 443
+bigiq_onboard_user: admin
+bigiq_onboard_password: "{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}"
+bigiq_onboard_validate_certs: false
+bigiq_onboard_transport: rest
+bigiq_onboard_timeout: 120
+
+### Username/password setting configuration
+bigiq_onboard_new_root_password: "{{ hostvars[inventory_hostname].ansible_ssh_pass }}"
+bigiq_onboard_old_root_password: "{{ hostvars[inventory_hostname].bigiq_default_root_pwd }}"
+bigiq_onboard_new_admin_password: "{{ hostvars[inventory_hostname].ansible_ssh_pass }}"
+bigiq_onboard_old_admin_password: "{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}"
+
+### Device configuration
+
+# The type of BIG-IQ node to setup.
+#
+# Valid values are,
+#
+#  * cm
+#  * dcd
+#
+bigiq_onboard_node_type: "{{ hostvars[inventory_hostname].node_type }}"
+
+# The master passphrase to set on the device
+#
+# This passphrase is used as a seed to encrypt data that
+# is stored in BIG-IQ. It must meet certain complexity
+# requirements before BIG-IQ will accept it.
+#
+# These are,
+#
+#  * 16 characters long
+#
+# and must contain at least
+#
+#  * one uppercase
+#  * one letter
+#  * one lower case letter
+#  * one number
+#  * special character
+#
+bigiq_onboard_master_passphrase: "{{ hostvars[inventory_hostname].bigiq_masterkey }}"
+
+### DNS configuration
+#
+# DNS servers that the BIG-IQ will use for name resolution
+#
+# This value **must** be a list. By default, the nameserver
+# provided is one run by Google. This will work, however,
+# you will be unable to resolve DNS names internal to your
+# organization.
+#
+# You should change this to the Primary/Secondary nameservers
+# of your organization.
+#
+bigiq_onboard_dns_nameservers:
+  - "{{ hostvars[inventory_hostname].bigiq_dns_server }}"
+
+# DNS search domains
+#
+# The domains that hostnames will be searched within by default.
+#
+# This should be changed to include the name of your organizations
+# domain.
+#
+bigiq_onboard_dns_search:
+  - "{{ hostvars[inventory_hostname].bigiq_dns_search }}"
+
+### NTP configuration
+
+# NTP servers to configure on the BIG-IQ
+#
+# This value **must** be a list of items (even if there is
+# only one item).
+#
+# The default value is typically sufficient for most deployments
+# unless you have a specific need in your environment (for
+# instance if your stratum 1 time server is a site router or
+# something.
+#
+bigiq_onboard_ntp_servers:
+  - "{{ hostvars[inventory_hostname].bigiq_ntp_server }}"
+
+# The timezone to set on the BIG-IQ device
+#
+# This timezone should be specified in the "TZ" format as seen
+# here
+#
+#  * https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+#
+bigiq_onboard_timezone: "{{ hostvars[inventory_hostname].bigiq_timezone }}"
+
+### License configuration
+#
+# License key to use to license the BIG-IQ device.
+#
+# If you do not wish to license your device, leave this
+# field empty.
+#
+bigiq_onboard_license_key: "{{ hostvars[inventory_hostname].license }}"
+
+### Hostname of the BIG-IQ
+#
+# Specifies the hostname that the BIG-IQ should have.
+#
+# By default, we do not specify this and let the system default
+# to the hostname that is set when the device is first created.
+#
+bigiq_onboard_hostname: "{{ inventory_hostname }}"
+
+### Force re-running the role
+#
+# This is useful in cases where you reset the BIG-IQs config via
+# the ``clear-rest-storage -d`` command, but this command does
+# not unset the config option that says the BIG-IQ is configured.
+#
+# Therefore, the BIG-IQ will say it is configured even after you
+# essentially restored system defaults.
+#
+bigiq_onboard_force: false
+
+### Discovery address Self-IP to set
+#
+# Use this to specify a self-ip to use as the discovery address.
+# If this value is commented out (the default) it will use the
+# BIG-IQ's management address as the discovery address.
+#
+# You **must** include the subnet with the IP address as well.
+# The subnet should be in CIDR format. ex, 1.2.3.4/32
+#
+# A VLAN named 'discovery' will be created along with the self-ip
+# automatically.
+#
+bigiq_onboard_discovery_address: "{{ hostvars[inventory_hostname].discoveryip }}"
+
+## Enable basic auth
+#
+# Enables basic authentication. This is useful only in debug
+# or testing cases where you may be using something like Postman
+# to test a BIG-IQ's REST API.
+#
+# This is disabled by default
+#
+bigiq_onboard_set_basic_auth: false

@@ -1,9 +1,0 @@
-bigiq_onboard_server: "{{ ansible_host }}"
-bigiq_onboard_hostname: bigiq-cm-02.local
-bigiq_onboard_node_type: cm
-bigiq_onboard_license_key: W7910-531806-979-9214061-0509584
-### Discovery address Self-IP to set
-# Use this to specify a self-ip to use as the discovery address.
-# If this value is commented out (the default) it will use the
-# BIG-IQ's management address as the discovery address.
-#bigiq_onboard_discovery_address: 10.1.10.5/24

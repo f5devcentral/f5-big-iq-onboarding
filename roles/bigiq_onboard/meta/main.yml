@@ -1,0 +1,18 @@
+---
+dependencies: []
+
+galaxy_info:
+  role_name: bigiq_onboard
+  author: caphrim007
+  description: Performs a basic series of on-boarding steps to bootstrap a BIG-IQ system to the point that it can accept configuration.
+  company: F5 Networks
+  license: Apache
+  min_ansible_version: 2.7
+  platforms:
+    - name: BIG-IQ
+      versions:
+        - 6.0.1
+  galaxy_tags:
+    - f5
+    - networking
+    - bigiq

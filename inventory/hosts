@@ -1,13 +1,31 @@
 [all:vars]
 ansible_user=admin
-ansible_ssh_pass=admin
+ansible_ssh_pass=<secret>
 ansible_port=22
 # Create the private key used to access the instance in AWS/Azure in PEM format
 ansible_ssh_private_key_file=/ansible/privatekey.pem
 
-[f5-bigiq]
-bigiq-cm-01 ansible_host=10.1.1.4 
-bigiq-dcd-01 ansible_host=10.1.1.6
-bigiq-dcd-02 ansible_host=10.1.1.7
-bigiq-dcd-03 ansible_host=10.1.1.8
-bigiq-cm-02 ansible_host=10.1.1.5
+[f5-bigiq:children]
+f5-bigiq-cm
+f5-bigiq-dcd
+
+[f5-bigiq-cm]
+bigiq-cm-81.lab.local ansible_host=172.16.1.46  discoveryip=172.16.128.46/17 node_type=cm haprimary=True license=CFCAL-MDUCPD-BAM-TJNZBLI-DLTCLOG
+bigiq-cm-82.lab.local ansible_host=172.16.1.48  discoveryip=172.16.128.48/17 node_type=cm haprimary=False license=SBFCO-HIMYQY-XWN-MZCUJAA-YPKGXJE
+
+[f5-bigiq-dcd]
+bigiq-dcd-1.lab.local ansible_host=172.16.1.44 discoveryip=172.16.128.44/17 node_type=dcd license=ISQEI-OIPYXB-JWH-IQJLJKL-WQLUYVQ
+bigiq-dcd-2.lab.local ansible_host=172.16.1.45 discoveryip=172.16.128.45/17 node_type=dcd license=QMWWJ-FHUOXH-LBP-ESCXEPU-EIJBAJB
+bigiq-dcd-3.lab.local ansible_host=172.16.1.47 discoveryip=172.16.128.47/17 node_type=dcd license=CQEDU-GVFTOI-WQL-CUUCOGC-QMZHPNT
+
+[f5-bigiq:vars]
+bigiq_masterkey=ThisIsMySuperSecretMasterKey123!
+bigiq_ntp_server=time.nist.gov
+bigiq_dns_server=8.8.8.8
+bigiq_dns_search=example.local
+bigiq_timezone=America/Los_Angeles
+# the values below are the default values for admin and root accounts that need to be changed. 
+# the new admin and root password value is the value of ansible_ssh_pass under [all:vars].
+# Do not change the values for bigiq_default_admin_pwd or bigiq_default_root_pwd below.
+bigiq_default_admin_pwd=admin
+bigiq_default_root_pwd=default
