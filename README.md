@@ -72,7 +72,7 @@ Instructions
 4. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, ...).
 
     ```
-    cd f5-big-iq-pm-team/f5-bigiq-onboarding
+    cd f5-bigiq-onboarding
     vi inventory/hosts
     ```
 
