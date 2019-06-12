@@ -1,10 +1,11 @@
 ---
-- name: Pre-tasks
+- name: Pre-tasks for BIG-IQ deployed in the Cloud (AWS or Azure)
   hosts: f5-bigiq
+  connection: local
   gather_facts: False
   tasks:
     - name: tmsh modify auth password admin
-      raw: bash -c "echo -en \"{{ bigiq_onboard_new_admin_password }}\n{{ bigiq_onboard_new_admin_password }}\n\" | tmsh modify auth password admin"
+      raw: bash -c "echo -en \"{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n\" | tmsh modify auth password admin"
       ignore_unreachable: yes
 
     - name: tmsh modify auth user admin shell bash
