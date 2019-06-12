@@ -71,16 +71,15 @@ Instructions
 
 4. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, ...).
 
+    ```
+    cd f5-big-iq-pm-team/f5-bigiq-onboarding
+    vi inventory/hosts
+    ```
+
     Notes:
     
     - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set).
     - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0
-
-
-   ```
-   cd f5-big-iq-pm-team/f5-bigiq-onboarding
-   vi inventory/hosts
-   ```
 
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
