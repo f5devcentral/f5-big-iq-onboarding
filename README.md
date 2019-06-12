@@ -76,34 +76,36 @@ Instructions
     - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set).
     - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0
 
-  ```
-  cd f5-big-iq-pm-team/f5-bigiq-onboarding
-  vi inventory/hosts
-  ```
+    ```
+    cd f5-big-iq-pm-team/f5-bigiq-onboarding
+    vi inventory/hosts
+    ```
 
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
-  ```
-  sudo docker build . -t f5-bigiq-onboarding
-  ```
+    ```
+    sudo docker build . -t f5-bigiq-onboarding
+    ```
 
-6. Validate Docker and Ansible are working correctly: (Ansible version should be displayed)
+6. Validate Docker and Ansible are working correctly.
 
-  ```
-  sudo docker run -t f5-bigiq-onboarding ansible-playbook --version
-  ```
+    ```
+    sudo docker run -t f5-bigiq-onboarding ansible-playbook --version
+    ```
+
+  Ansible version should be displayed.
 
 7. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
 
-  ```
-  ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml -i /ansible/inventory/hosts
-  ```
+    ```
+    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml -i /ansible/inventory/hosts
+    ```
 
 8. Execute the BIG-IQ onboarding playbooks.
 
-  ```
-  ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard.yml -i /ansible/inventory/hosts
-  ```
+    ```
+    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard.yml -i /ansible/inventory/hosts
+    ```
 
 9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
