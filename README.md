@@ -1,3 +1,6 @@
+BIG-IQ Onboarding with Docker and Ansible
+-----------------------------------------
+
 Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
@@ -9,8 +12,8 @@ Consult the [Planning and Implementing a BIG-IQ Centralized Management Deploymen
 
 Once the inventory hosts file is set with the necessary information (IP, license, dns, ntp, ...), the Ansible playbooks can be launched from your local machine or a remote linux machine, as long as you have network connectivity to the management IP addresses of the targeted BIG-IQ instances to onboard/configure.
 
-BIG-IQ Onboarding with Docker and Ansible
------------------------------------------
+Instructions
+------------
 
 1. Choose the number of BIG-IQ and DCD you aim to deploy.
 
