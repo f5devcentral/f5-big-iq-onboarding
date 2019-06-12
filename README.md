@@ -40,13 +40,13 @@ Instructions
     - Copy your private key in the under the f5-bigiq-onboarding directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem``
     - Configure the network security group for the ingress rules on each instances
 
-      *Example for AWS: (10.1.1.0/24 = VPC subnet, sg-06b096098f4 = Security Group Name, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
+      *Example for AWS: (172.16.0/24 = VPC subnet, sg-06b096098f4 = Security Group Name, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
 
       Ports | Protocol | Source 
       ----- | -------- | ------
-      | 80  | tcp | 10.1.1.0/24 |
-      | 443 | tcp | 10.1.1.0/24 |
-      | 22 | tcp | 10.1.1.0/24 |
+      | 80  | tcp | 172.16.0/24 |
+      | 443 | tcp | 172.16.0/24 |
+      | 22 | tcp | 172.16.0/24 |
       | 0-65535 | tcp | sg-06b096098f4 |
       | All traffic | all | 34.132.183.134/32 |      
   
