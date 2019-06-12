@@ -1,0 +1,53 @@
+---
+
+# Note:
+#
+#  * The status code returned by BIG-IQ is usually 202 when it
+#    attempts to add a new node. This is HTTP status "Accepted"
+#
+
+- name: Register DCD if not already registered
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/shared/esmgmt/add-node"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      address: "{{ register_dcd_server }}"
+      bigIqUsername: "{{ register_dcd_user }}"
+      bigIqPassword: "{{ register_dcd_password }}"
+      httpPort: 9200
+      transportAddress: "{{ register_dcd_server }}"
+      transportPort: 9300
+      zone: default
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: regdcd
+  changed_when: regdcd.status in [200, 202]
+
+- name: sleep for 5 seconds and continue with play
+  wait_for:
+    timeout: 8
+  delegate_to: localhost
+
+- name: Wait for DCD node to settle
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/shared/esmgmt/add-node/{{ regdcd.json.id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: dcdsettle
+  changed_when: dcdsettle.status == 200
+  retries: 120
+  until: dcdsettle.json.status in ['FINISHED', 'FAILED']
+  delay: 2
+
+
+
+- name: Fail if DCD node did not register
+  fail:
+    msg: "Node addition failed with: {{ dcdsettle}}"
+  when: dcdsettle.json.status == 'FAILED'

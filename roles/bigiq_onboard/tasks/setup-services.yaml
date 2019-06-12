@@ -1,0 +1,27 @@
+---
+
+- name: Configure DNS settings
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/sys/dns"
+    method: PATCH
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      nameServers: "{{ bigiq_onboard_dns_nameservers }}"
+      search: "{{ bigiq_onboard_dns_search }}"
+    body_format: json
+
+- name: Configure NTP settings
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/tm/sys/ntp"
+    method: PATCH
+    timeout: "{{ bigiq_onboard_timeout }}"
+    validate_certs: "{{ bigiq_onboard_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    body:
+      servers: "{{ bigiq_onboard_ntp_servers }}"
+      timezone: "{{ bigiq_onboard_timezone }}"
+    body_format: json

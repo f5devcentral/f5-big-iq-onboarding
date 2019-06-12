@@ -1,0 +1,45 @@
+---
+
+### CM Connection parameters
+register_cm_server: "{{ ansible_host }}"
+register_cm_server_port: 443
+register_cm_user: admin
+register_cm_password: "{{ hostvars[inventory_hostname].ansible_ssh_pass }}"
+register_cm_validate_certs: false
+register_cm_transport: rest
+register_cm_timeout: 120
+bigiq_dcd_groupname: f5-bigiq-dcd
+
+### DCD connection parameters
+
+# Username to use when logging in to the DCD device
+#
+# This value is sent to the CM device during DCD node registration.
+# The CM needs to communicate with the DCD device to register it.
+# Therefore, this credential is required to do that
+# We assume this is an initial setup, so we will use default values here. If a different value is used, please add it via extra variables.
+register_dcd_user: admin
+
+# Password of the user used to connect to DCD device
+#
+# This value is sent to the CM device during DCD node registration.
+# The CM needs to communicate with the DCD device to register it.
+# Therefore, this credential is required to do that
+#
+register_dcd_password: "{{ hostvars[inventory_hostname].ansible_ssh_pass }}"
+
+# The DCD server IP address will be the discoveryip of the DCD. It to add to the CM device
+# The value will be taken of the host file attribute: "discoveryip" of the DCD. No need to define here. It is defined in register_dcd.yml file.
+
+# The address the DCD device should listen for events on
+#The value will be taken of the host file attribute: "discoveryip" of the DCD. No need to define here
+
+# List of services to activate for data collection.
+#
+register_dcd_services:
+  - access
+  - dos
+  - websafe
+  - ipsec
+  - afm
+  - asm

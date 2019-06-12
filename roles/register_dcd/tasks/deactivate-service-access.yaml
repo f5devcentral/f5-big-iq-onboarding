@@ -1,0 +1,43 @@
+---
+
+- name: De-activate Access service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/access/event-logs/listener/remove-listener-task"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: access
+      deviceReference:
+        link: "shared/resolver/device-groups/cm-access-allLoggingNodes/devices/{{ device_id }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: dsac
+  changed_when: dsac.status in [200, 202]
+  until: dsac.status in [200, 202]
+  retries: 120
+  delay: 2
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ dsac.json.id }}"
+
+- name: Wait for service de-activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/access/event-logs/listener/remove-listener-task/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: dsac1
+  changed_when: dsac1.status == 200
+  retries: 120
+  until: dsac1.json.status in ['FINISHED', 'FAILED'] or dsac1.status == 404
+  delay: 2
+
+- name: Fail if service de-activation failed
+  fail:
+    msg: "Service de-activation failed with: {{ dsac1 }}"
+  when: dsac1.json.status == 'FAILED'

@@ -1,0 +1,17 @@
+---
+
+
+
+- include_tasks: setup-licensing.yaml
+  when: bigiq_onboard_license_key|default(False)
+
+- include_tasks: setup-basic-auth.yaml
+  when: bigiq_onboard_set_basic_auth|default(False)|bool
+
+- include_tasks: setup-node-type.yaml
+- include_tasks: setup-management-address.yaml
+- include_tasks: setup-services.yaml
+- include_tasks: setup-master-passphrase.yaml
+- include_tasks: setup-hostname.yaml
+- include_tasks: setup-passwords.yaml
+- include_tasks: setup-mark-system-setup.yaml

@@ -1,0 +1,45 @@
+---
+
+- name: Activate Access service
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/access/event-logs/listener/add-listener-task"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    method: POST
+    body:
+      module: access
+      listenerInterfaceAddress: "{{ register_dcd_listener }}"
+      deviceReference:
+        link: "{{ device_ref }}"
+    body_format: json
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+    status_code: 200,202
+  register: as
+  changed_when: as.status in [200, 202]
+  until: as.status in [200, 202] or 'Only one task can be created at a time' not in as.json.message
+  retries: 120
+  delay: 2
+
+
+- name: Set task ID
+  set_fact:
+    task_id: "{{ as.json.id }}"
+
+- name: Wait for Access service activation to complete
+  uri:
+    url: "https://{{ provider.server }}:{{ provider.server_port }}/mgmt/cm/access/event-logs/listener/add-listener-task/{{ task_id }}"
+    timeout: "{{ register_cm_timeout }}"
+    validate_certs: "{{ register_cm_validate_certs }}"
+    headers:
+      X-F5-Auth-Token: "{{ f5_auth_token }}"
+  register: as1
+  changed_when: as1.status == 200
+  retries: 120
+  until: as1.json.status in ['FINISHED', 'FAILED'] or as1.status == 404
+  delay: 2
+
+- name: Fail if Accessservice activation failed
+  fail:
+    msg: "Access service activation failed with: {{ as1 }}"
+  when: as1.json.status == 'FAILED'
