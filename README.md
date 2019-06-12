@@ -5,7 +5,7 @@ This can be used for *lab*, *proof of concept* or *production* BIG-IQ deployment
 
 Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0.html) for for details.
 
-![Deployment Diagram](./images/diagram_onboarding.png)
+![Deployment Diagram](./images/diagramOnboarding.png)
 
 Once the inventory hosts file is set with the necessary information (IP, license, dns, ntp, ...), the Ansible playbooks can be launched from your local machine or a remote linux machine, as long as you have network connectivity to the management IP addresses of the targeted BIG-IQ instances to onboard/configure.
 
