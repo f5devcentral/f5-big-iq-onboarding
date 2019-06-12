@@ -1,11 +1,11 @@
 Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
-This can be used for *lab*, *proof of concept* or *production* BIG-IQ deployments.
+This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments.
 
 Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0.html) for for details.
 
-![Deployment Diagram](./images/diagramOnboarding.png)
+![Deployment Diagram](./images/diagram_onboarding.png)
 
 Once the inventory hosts file is set with the necessary information (IP, license, dns, ntp, ...), the Ansible playbooks can be launched from your local machine or a remote linux machine, as long as you have network connectivity to the management IP addresses of the targeted BIG-IQ instances to onboard/configure.
 
@@ -66,7 +66,7 @@ BIG-IQ Onboarding with Docker and Ansible
     git clone https://github.com/f5devcentral/f5-big-iq-pm-team.git
     ```
 
-4. Update the ansible inventory hosts file with the correct information (management IP, self IP, BIG-IQ license, master key, ...).
+4. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, ...).
 
     Notes:
     
@@ -84,29 +84,29 @@ BIG-IQ Onboarding with Docker and Ansible
   sudo docker build . -t f5-bigiq-onboarding
   ```
 
-  Validate Docker and Ansible are working correctly: (Ansible version should be displayed)
+6. Validate Docker and Ansible are working correctly: (Ansible version should be displayed)
 
   ```
   sudo docker run -t f5-bigiq-onboarding ansible-playbook --version
   ```
 
-5. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
+7. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
 
   ```
   ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml -i /ansible/inventory/hosts
   ```
 
-6. Execute the BIG-IQ onboarding playbooks.
+8. Execute the BIG-IQ onboarding playbooks.
 
   ```
   ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard.yml -i /ansible/inventory/hosts
   ```
 
-7. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
+9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
-8. If have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
+10. If have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
 
-9. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
+11. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
 
 For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=6.1.0).
 
