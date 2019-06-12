@@ -93,7 +93,7 @@ Instructions
     sudo docker run -t f5-bigiq-onboarding ansible-playbook --version
     ```
 
-  Ansible version should be displayed.
+    Ansible version should be displayed.
 
 7. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
 
