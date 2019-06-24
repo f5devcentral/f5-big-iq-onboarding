@@ -95,10 +95,10 @@ Instructions
 
     Ansible version should be displayed.
 
-7. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
+7. Change default shell on all instances to bash, and set the admin's password (*AWS only*)
 
     ```
-    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml
+    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks_aws.yml
     ```
 
 8. Execute the BIG-IQ onboarding playbooks.
@@ -109,9 +109,23 @@ Instructions
 
 9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
-10. If have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
+10. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
 
-11. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
+11. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs.
+
+    ```
+    mkdir /shared/scripts
+    cd /shared/scripts
+    curl https://raw.githubusercontent.com/f5devcentral/f5-big-iq-pm-team/master/f5-bigiq-connectivityChecks/f5_network_connectivity_checks.sh > f5_network_connectivity_checks.sh
+    chmod +x f5_network_connectivity_checks.sh
+    ./f5_network_connectivity_checks.sh
+    ```
+
+12. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/2.html) (**optional**)
+
+13. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/3.html) (**optional**)
+
+14. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
 
 For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=6.1.0).
 
