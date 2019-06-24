@@ -10,10 +10,10 @@ f5-bigiq-cm
 f5-bigiq-dcd
 
 [f5-bigiq-cm]
-bigiq-cm-4.lab.local ansible_host=10.192.75.96 node_type=cm haprimary=True license=L7747-352963-698-9479261-3078281
+bigiq-cm-4.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96 node_type=cm haprimary=True license=<license>
 
 [f5-bigiq-dcd]
-bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97 node_type=dcd license=L7747-352963-698-9479261-3078281
+bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97 node_type=dcd license=<license>
 
 
 [f5-bigiq:vars]
