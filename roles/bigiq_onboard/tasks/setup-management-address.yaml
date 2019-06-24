@@ -8,7 +8,7 @@
     headers:
       X-F5-Auth-Token: "{{ f5_auth_token }}"
   register: ez
-  when: bigiq_onboard_discovery_address is not defined
+  when: bigiq_onboard_discovery_address == provider.server
 
 - name: Set discovery address
   uri:
@@ -21,7 +21,7 @@
     body:
       discoveryAddress: "{{ ez.json.managementIpAddress[:-3] }}"
     body_format: json
-  when: bigiq_onboard_discovery_address is not defined
+  when: bigiq_onboard_discovery_address == provider.server
 
 - name: Check discovery address is correct
   uri:
@@ -34,12 +34,12 @@
   until: ez.json.managementIpAddress[:-3] == result.json.discoveryAddress
   retries: 5
   delay: 3
-  when: bigiq_onboard_discovery_address is not defined
+  when: bigiq_onboard_discovery_address == provider.server
 
 ############ from here when Discovery IP is defined
 
 - include_tasks: setup_network.yaml
-  when: bigiq_onboard_discovery_address is defined
+  when: bigiq_onboard_discovery_address != provider.server 
 
 - name: Set discovery address to self-ip
   uri:
@@ -55,7 +55,7 @@
           vlan: discovery
           iface: "1.1"
     body_format: json
-  when: bigiq_onboard_discovery_address is defined
+  when: bigiq_onboard_discovery_address != provider.server 
 
 
 

@@ -73,7 +73,7 @@ Instructions
 
     ```
     cd f5-bigiq-onboarding
-    vi inventory/hosts
+    vi hosts
     ```
 
     Notes:
@@ -98,13 +98,13 @@ Instructions
 7. Change default shell on all instances to bash, and set the admin's password (*AWS and Azure only*)
 
     ```
-    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml -i /ansible/inventory/hosts
+    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard_pretasks.yml
     ```
 
 8. Execute the BIG-IQ onboarding playbooks.
 
     ```
-    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard.yml -i /ansible/inventory/hosts
+    ./ansible_helper ansible-playbook /ansible/playbooks/bigiq_onboard.yml
     ```
 
 9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.

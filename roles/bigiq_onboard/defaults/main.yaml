@@ -136,7 +136,7 @@ bigiq_onboard_force: false
 # A VLAN named 'discovery' will be created along with the self-ip
 # automatically.
 #
-bigiq_onboard_discovery_address: "{{ hostvars[inventory_hostname].discoveryip }}"
+bigiq_onboard_discovery_address: "{{ hostvars[inventory_hostname].discoveryip | default(ansible_host) }}"
 
 ## Enable basic auth
 #
