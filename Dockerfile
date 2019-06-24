@@ -9,6 +9,3 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 RUN pip install ansible  
 
 RUN ansible-galaxy install f5devcentral.f5ansible,master 
-
-RUN mkdir /etc/ansible/
-COPY ansible.cfg /etc/ansible/ansible.cfg
