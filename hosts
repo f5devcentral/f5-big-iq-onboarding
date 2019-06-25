@@ -1,8 +1,10 @@
 [all:vars]
+# Note this becomes the bigiq web credentials
 ansible_user=admin
 ansible_ssh_pass=<new_password>
 ansible_port=22
 # Create the private key used to access the instance in AWS/Azure in PEM format
+# Note this will be the private key placed in the root of the onboarding folder in step 2
 ansible_ssh_private_key_file=/ansible/privatekey.pem
 
 [f5-bigiq:children]
