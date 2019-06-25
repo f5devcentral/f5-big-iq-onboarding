@@ -11,11 +11,11 @@ f5-bigiq-dcd
 
 [f5-bigiq-cm]
 # Remove discoveryip if you want to use the management IP as discovery address (recommended for AWS and Azure deployment)
-bigiq-cm-4.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96 node_type=cm haprimary=True license=<license>
+# discoveryip should include a mask as shown in the example below
+bigiq-cm-4.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96/24 node_type=cm haprimary=True license=<license>
 
 [f5-bigiq-dcd]
-bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97 node_type=dcd license=<license>
-
+bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97/24 node_type=dcd license=<license>
 
 [f5-bigiq:vars]
 bigiq_masterkey=ThisIsMySuperSecretMasterKey123!
