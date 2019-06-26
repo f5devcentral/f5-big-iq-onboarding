@@ -66,13 +66,13 @@ Instructions
     Then, clone the repository:
 
     ```
-    git clone https://github.com/f5devcentral/f5-big-iq-pm-team.git
+    git clone https://github.com/f5devcentral/f5-big-iq-onboarding.git
     ```
 
 4. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, ...).
 
     ```
-    cd f5-bigiq-onboarding
+    cd f5-big-iq-onboarding
     vi hosts
     ```
 
@@ -84,13 +84,13 @@ Instructions
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
     ```
-    sudo docker build . -t f5-bigiq-onboarding
+    sudo docker build . -t f5-big-iq-onboarding
     ```
 
 6. Validate Docker and Ansible are working correctly.
 
     ```
-    sudo docker run -t f5-bigiq-onboarding ansible-playbook --version
+    sudo docker run -t f5-big-iq-onboarding ansible-playbook --version
     ```
 
     Ansible version should be displayed.
