@@ -21,7 +21,7 @@ bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97/24 node
 
 [f5-bigiq:vars]
 bigiq_masterkey=ThisIsMySuperSecretMasterKey123!
-bigiq_ntp_server=time.nist.gov
+bigiq_ntp_server=time.google.com
 bigiq_dns_server=8.8.8.8
 bigiq_dns_search=example.local
 bigiq_timezone=America/Los_Angeles

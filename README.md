@@ -15,7 +15,7 @@ Once the inventory hosts file is set with the necessary information (IP, license
 Instructions
 ------------
 
-1. Choose the number of BIG-IQ and DCD you aim to deploy.
+1. Choose the number of BIG-IQ CM and DCD you aim to deploy.
 
    **Examples**:
     - 1 BIG-IQ CM standalone, 1 BIG-IQ DCD
@@ -146,7 +146,13 @@ Miscellaneous
 Troubleshooting
 ---------------
 
-n/a
+1. If you want to know what is happening when a Playbook runs, provide the **-vvvv** argument to the ansible-playbook command.
+
+    ```
+    ./ansible_helper ansible-playbook /ansible/bigiq_onboard.yml -i /ansible/hosts -vvvv
+    ```
+
+2. If you get the error *"Failed to license the device"*, make sure your BIG-IQ instances have access to the F5 license server (Internet).
 
 ### Copyright
 
