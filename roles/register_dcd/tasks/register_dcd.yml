@@ -1,9 +1,17 @@
 ---
-- name: set facts that are used for the following tasks
+- name: set facts when discovery IP is set
   set_fact:
    register_dcd_server_hostname: 'item'
-   register_dcd_server: "{{ hostvars[item]['discoveryip'].split('/')[0] }}"
+   register_dcd_server: "{{ hostvars[item]['discoveryip'].split('/')[0] )}}" 
    register_dcd_listener: "{{ hostvars[item]['discoveryip'].split('/')[0] }}"
+  when: hostvars[item].discoveryip is defined
+
+- name: set fact when discovery IP is not set
+  set_fact:
+   register_dcd_server_hostname: 'item'
+   register_dcd_server: "{{ hostvars[item].ansible_host }}" 
+   register_dcd_listener: "{{ hostvars[item].ansible_host }}"
+  when: hostvars[item].discoveryip is not defined
 
 - name: Ensure the DCD server IP address is provided
   fail:
