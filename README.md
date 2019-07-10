@@ -34,11 +34,11 @@ Instructions
 
     Public Cloud deployments ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
 
-    - Deploy the instances with min 2 NICs
-    - Create an EIP and assign it to the primary interfaces for each CM instances
+    - Deploy the instances with min 2 NICs (**REQUIRED** even if you are not using the 2nd Network Interface)
+    - Create an EIP and assign it to the primary interfaces for each CM and DCD instances
     - Make sure you have the private key of the Key Pairs selected
-    - Copy your private key in the under the f5-bigiq-onboarding directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem``
-    - Configure the network security group for the ingress rules on each instances
+    - Copy your private key in the under the ~/.ssh directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem``
+    - Configure the network security group for the ingress rules on each instances (you may create the SG before creating the VEs)
 
       *Example for AWS: (172.16.0/24 = VPC subnet, sg-06b096098f4 = Security Group Name, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
 
@@ -78,8 +78,8 @@ Instructions
 
     Notes:
     
-    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set).
-    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0
+    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). The 2nd NIC won't be used in this case.
+    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP)
 
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
