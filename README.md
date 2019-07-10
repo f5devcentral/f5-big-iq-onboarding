@@ -40,14 +40,11 @@ Instructions
     - Copy your private key in the under the ~/.ssh directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem``
     - Configure the network security group for the ingress rules on each instances (you may create the SG before creating the VEs)
 
-      *Example for AWS: (172.16.0/24 = VPC subnet, sg-06b096098f4 = Security Group Name, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
+      *Example for AWS: (10.192.75.0/24 = VPC subnet, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
 
       Ports | Protocol | Source 
       ----- | -------- | ------
-      | 80  | tcp | 172.16.0/24 |
-      | 443 | tcp | 172.16.0/24 |
-      | 22 | tcp | 172.16.0/24 |
-      | 0-65535 | tcp | sg-06b096098f4 |
+      | 0-65535 | tcp | 10.192.75.0/24 |
       | All traffic | all | 34.132.183.134/32 |      
   
 3. From a linux machine with access to the BIG-IQ instances.
@@ -111,7 +108,7 @@ Instructions
 
 10. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
 
-11. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs.
+11. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
     ```
     mkdir /shared/scripts
@@ -120,6 +117,8 @@ Instructions
     chmod +x f5_network_connectivity_checks.sh
     ./f5_network_connectivity_checks.sh
     ```
+
+    Note: Default user will be root but you can use different one (e.g. admin), in this case run: ``./f5_network_connectivity_checks.sh admin admin``
 
 12. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/2.html) (*optional*)
 
@@ -135,7 +134,7 @@ Miscellaneous
 
 - In case you need to restore the BIG-IQ system to factory default settings, follow [K15886](https://support.f5.com/csp/article/K15886) article.
 
-- Disable SSL authentication for SSG (**LAB/POC only**):
+- Disable SSL authentication for SSG VMware (**LAB/POC only**):
 
   ```
   echo >> /var/config/orchestrator/orchestrator.conf
