@@ -38,7 +38,7 @@ Instructions
     - Create EIPs and assign them to the primary interfaces for each CM and DCD instances
     - Make sure you have the private key of the Key Pairs selected
     - Copy your private key in the under the ~/.ssh directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem``
-    - Configure the network security group for the ingress rules on each instances (you may create the SG before creating the VEs)
+    - Configure the network security group for the ingress rules on each instances
 
       *Example for AWS: (10.192.75.0/24 = VPC subnet, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
 
