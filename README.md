@@ -81,7 +81,7 @@ Instructions
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
     ```
-    sudo docker build . -t f5-big-iq-onboarding
+    sudo docker build -t f5-big-iq-onboarding .
     ```
 
 6. Validate Docker and Ansible are working correctly.
