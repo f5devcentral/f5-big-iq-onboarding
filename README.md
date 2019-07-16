@@ -153,6 +153,14 @@ Troubleshooting
 
 2. If you get the error *"Failed to license the device"*, make sure your BIG-IQ instances have access to the F5 license server (Internet).
 
+3. Below error can be ignored.
+
+    ```
+    TASK [bigiq_onboard : Test authentication - old credentials] ****************************************************************************************************************
+    fatal: [bigiq-dcd-1.lab.local]: FAILED! => {"cache_control": "no-store, no-cache, must-revalidate", "changed": false, "connection": "close", "content": "{\"code\":401,\"message\":\"Authentication failed.\",\"originalRequestBody\":\"{\\\"username\\\":\\\"admin\\\", ...hn/login"}
+    ...ignoring
+    ```
+
 ### Copyright
 
 Copyright 2014-2019 F5 Networks Inc.

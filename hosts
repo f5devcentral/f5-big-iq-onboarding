@@ -13,7 +13,8 @@ f5-bigiq-dcd
 
 [f5-bigiq-cm]
 # Remove discoveryip if you want to use the management IP as discovery address (recommended for AWS and Azure deployment)
-# discoveryip should include a mask as shown in the example below
+# discoveryip should include a mask as shown in the example below (this will create a self-ip on the BIG-IQ)
+# The hostname must be a Fully Qualified Domain Name
 bigiq-cm-1.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96/24 node_type=cm haprimary=True license=<license>
 
 [f5-bigiq-dcd]
