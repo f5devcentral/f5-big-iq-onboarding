@@ -1,7 +1,8 @@
 [all:vars]
 # Note this becomes the bigiq web credentials
 ansible_user=admin
-ansible_ssh_pass=<new_password>
+# Leave admin password set to default for AWS and Azure
+ansible_ssh_pass=admin
 ansible_port=22
 # Create the private key used to access the instance in AWS/Azure in PEM format
 # Note this will be the private key placed in your ~/.ssh folder in step 2
