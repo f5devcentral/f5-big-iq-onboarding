@@ -159,7 +159,7 @@ Troubleshooting
 3. Below error can be ignored.
 
     ```
-    TASK [bigiq_onboard : Test authentication - old credentials] ****************************************************************************************************************
+    TASK [bigiq_onboard : Test authentication - old or new credentials] ****************************************************************************************************************
     fatal: [bigiq-dcd-1.lab.local]: FAILED! => {"cache_control": "no-store, no-cache, must-revalidate", "changed": false, "connection": "close", "content": "{\"code\":401,\"message\":\"Authentication failed.\",\"originalRequestBody\":\"{\\\"username\\\":\\\"admin\\\", ...hn/login"}
     ...ignoring
     ```
