@@ -109,7 +109,7 @@ Instructions
 
 9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
-10. Change admin and root default password on all instances, go to [K16275](https://support.f5.com/csp/article/K16275) for instructions..
+10. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
 
 11. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
 
