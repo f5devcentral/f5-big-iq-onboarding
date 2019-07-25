@@ -7,8 +7,14 @@
     - name: tmsh modify auth password admin (1st attempt)
       raw: bash -c "echo -en \"{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n\" | tmsh modify auth password admin"
     
+    - pause:
+      seconds: 30
+
     - name: tmsh modify auth password admin (2nd attempt)
       raw: bash -c "echo -en \"{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n{{ hostvars[inventory_hostname].bigiq_default_admin_pwd }}\n\" | tmsh modify auth password admin"
+
+    - pause:
+      seconds: 30
 
     - name: tmsh modify auth user admin shell bash and save sys config
       raw: bash -c "tmsh modify auth user admin shell bash; tmsh save sys config"
