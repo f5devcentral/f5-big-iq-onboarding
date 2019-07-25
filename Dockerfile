@@ -8,6 +8,8 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 RUN pip install ansible  
 
+RUN COPY ansible.cfg /etc/ansible
+
 RUN ansible-galaxy install f5devcentral.f5ansible,master
 #RUN ansible-galaxy install f5devcentral.bigiq_onboard,master
 #RUN ansible-galaxy install f5devcentral.register_dcd,master
