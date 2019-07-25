@@ -93,11 +93,13 @@ Instructions
 
     Ansible version should be displayed.
 
-7. Change default shell on all instances to bash, and set the admin's password (*AWS only*)
+7. Change default shell on all instances to bash, and set the admin's password to admin (*AWS only*).
 
     ```
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard_pretasks_aws.yml -i /ansible/hosts
     ```
+    
+    Note: try to ssh the BIG-IQ instances with the login admin, password admin and make sure authentication is successfull.
 
 8. Execute the BIG-IQ onboarding playbooks.
 
