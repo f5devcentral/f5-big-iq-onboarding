@@ -99,7 +99,7 @@ Instructions
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard_pretasks_aws.yml -i /ansible/hosts
     ```
     
-    Note: try to ssh the BIG-IQ instances with the login admin, password admin and make sure authentication is successfull.
+    Note: try to ssh the BIG-IQ instances with the login admin, password admin and make sure authentication is successfull. If not, re-run the above command.
 
 8. Execute the BIG-IQ onboarding playbooks.
 
@@ -139,7 +139,7 @@ Miscellaneous
 
 - In case you need to restore the BIG-IQ system to factory default settings, follow [K15886](https://support.f5.com/csp/article/K15886) article.
 
-- Disable SSL authentication for SSG VMware (**LAB/POC only**):
+- Disable SSL authentication for SSG or VE creation in VMware (**LAB/POC only**):
 
   ```
   echo >> /var/config/orchestrator/orchestrator.conf
