@@ -109,9 +109,11 @@ Instructions
 
 9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
-10. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
+10. Change admin and root default password on all instances.
 
-11. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
+11. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
+
+12. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
     ```
     mkdir /shared/scripts
@@ -123,11 +125,11 @@ Instructions
 
     Note: Default user will be root but you can use different one (e.g. admin), in this case run: ``./f5_network_connectivity_checks.sh admin admin``
 
-12. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/2.html) (*optional*)
+13. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/2.html) (*optional*)
 
-13. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/3.html) (*optional*)
+14. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/3.html) (*optional*)
 
-14. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
+15. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
 
 For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=6.1.0).
 
