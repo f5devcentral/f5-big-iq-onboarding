@@ -145,6 +145,7 @@ Miscellaneous
   echo >> /var/config/orchestrator/orchestrator.conf
   echo 'VALIDATE_CERTS = "no"' >> /var/config/orchestrator/orchestrator.conf
   bigstart restart gunicorn
+  bigstart restart restjavad
   ```
 
 Troubleshooting
