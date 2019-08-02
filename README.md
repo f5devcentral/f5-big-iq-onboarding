@@ -38,8 +38,8 @@ Instructions
     - m4.2xlarge (AWS) and Standard_D8_v3 (Azure) are instance type recommended
     - Create EIPs and assign them to the primary interfaces for each CM and DCD instances
     - Make sure you have the private key of the Key Pairs selected
-    - Copy your private key in the under the ~/.ssh directory and name it ``privatekey.pem``and apply correct permission ``chmod 600 privatekey.pem`` in your linux machine you will use to run the tool (see step 3.)
     - Configure the network security group for the ingress rules on each instances
+    - Wait approximately 6 minutes before logging in
 
       *Example for AWS: (10.192.75.0/24 = VPC subnet, 34.132.183.134/32 = [your public IP](https://www.whatismyip.com))*
 
@@ -93,13 +93,14 @@ Instructions
 
     Ansible version should be displayed.
 
-7. Change default shell on all instances to bash, and set the admin's password to admin (*AWS only*).
+7. Change default shell on **ALL instances** to bash, and set the admin's password to admin (*AWS only*).
+   SSH to each instances and run these tmsh commands:
 
     ```
-    ./ansible_helper ansible-playbook /ansible/bigiq_onboard_pretasks_aws.yml -i /ansible/hosts
+    modify auth user admin password admin
+    modify auth user admin shell bash
+    save sys config
     ```
-    
-    Note: try to ssh the BIG-IQ instances with the login admin, password admin and make sure authentication is successfull. If not, re-run the above command.
 
 8. Execute the BIG-IQ onboarding playbooks.
 
