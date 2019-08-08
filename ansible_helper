@@ -1,4 +1,3 @@
 sudo docker run --rm -it \
-  -v ~/.ssh:/root/.ssh \
   -v $(pwd):/ansible \
   f5-big-iq-onboarding "$@"

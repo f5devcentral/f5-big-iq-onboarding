@@ -1,10 +1,3 @@
-[all:vars]
-# Note this becomes the bigiq web credentials
-ansible_user=admin
-# Leave admin password set to default for AWS and Azure
-ansible_ssh_pass=admin
-ansible_port=22
-
 [f5-bigiq:children]
 f5-bigiq-cm
 f5-bigiq-dcd
@@ -13,19 +6,19 @@ f5-bigiq-dcd
 # Remove discoveryip if you want to use the management IP as discovery address (recommended for AWS and Azure deployment)
 # discoveryip should include a mask as shown in the example below (this will create a self-ip on the BIG-IQ)
 # The hostname must be a Fully Qualified Domain Name
-bigiq-cm-1.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96/24 node_type=cm haprimary=True license=<license>
+bigiq-cm-1.lab.local ansible_host=10.192.75.96 discoveryip=10.192.75.96/24 bigiq_onboard_node_type=cm haprimary=True bigiq_onboard_license_key=<license>
 
 [f5-bigiq-dcd]
-bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97/24 node_type=dcd license=<license>
+bigiq-dcd-1.lab.local ansible_host=10.192.75.97 discoveryip=10.192.75.97/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=<license>
 
 [f5-bigiq:vars]
-bigiq_masterkey=ThisIsMySuperSecretMasterKey123!
-bigiq_ntp_server=time.google.com
-bigiq_dns_server=8.8.8.8
-bigiq_dns_search=example.local
-bigiq_timezone=America/Los_Angeles
-# the values below are the default values for admin and root accounts that need to be changed. 
-# the new admin and root password value is the value of ansible_ssh_pass under [all:vars].
-# Do not change the values for bigiq_default_admin_pwd or bigiq_default_root_pwd below.
-bigiq_default_admin_pwd=admin
-bigiq_default_root_pwd=default
+bigiq_onboard_new_root_password=default
+bigiq_onboard_new_admin_password=admin
+#bigiq_onboard_old_root_password=default
+#bigiq_onboard_old_admin_password=admin
+bigiq_onboard_master_passphrase=ThisIsMySuperSecretMasterKey123!
+bigiq_onboard_ntp_servers='["time.google.com"]'
+bigiq_onboard_dns_nameservers='["8.8.8.8"]'
+bigiq_onboard_dns_search='["example.local"]'
+bigiq_onboard_timezone=America/Los_Angeles
+bigiq_dcd_groupname=f5-bigiq-dcd

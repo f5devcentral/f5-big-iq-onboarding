@@ -11,5 +11,5 @@ RUN pip install ansible
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
 RUN ansible-galaxy install f5devcentral.f5ansible,master
-#RUN ansible-galaxy install f5devcentral.bigiq_onboard,master
-#RUN ansible-galaxy install f5devcentral.register_dcd,master
+RUN ansible-galaxy install f5devcentral.bigiq_onboard,v1.0.6
+RUN ansible-galaxy install f5devcentral.register_dcd,v1.0.2
