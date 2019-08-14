@@ -38,6 +38,7 @@ Instructions
     - m4.2xlarge (AWS) and Standard_D8_v3 (Azure) are instance type recommended
     - Create EIPs and assign them to the primary interfaces for each CM and DCD instances
     - Make sure you have the private key of the Key Pairs selected
+    - Copy your private key in the under the ~/.ssh directory and apply correct permission chmod 600 privatekey.pem in your linux machine you will use to run the tool
     - Configure the network security group for the ingress rules on each instances
     - Wait approximately 6 minutes before logging in
 
@@ -94,12 +95,18 @@ Instructions
     Ansible version should be displayed.
 
 7. Change default shell on **ALL instances** to bash, and set the admin's password to admin (*AWS only*).
-   SSH to each instances and run these tmsh commands:
+   SSH to each instances and run these tmsh commands (replace the IP addresses with the eth0 internal IP addresses of each instances):
 
     ```
-    modify auth user admin password admin
-    modify auth user admin shell bash
-    save sys config
+    declare -a ips=("10.1.1.27" "10.1.1.20")
+    newpassword="admin"
+    privkey="~/.ssh/privatekey.pem"
+    for h in "${ips[@]}"
+    do
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h modify auth user admin password $newpassword
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h modify auth user admin shell bash
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h tmsh save sys config
+    done
     ```
 
 8. Execute the BIG-IQ onboarding playbooks.
@@ -112,7 +119,7 @@ Instructions
 
 10. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
 
-11. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) to configure HA.
+11. If you have 2 BIG-IQ CMs, go to the BIG-IQ Knowledge Center [for 6.1 and below](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) or [for 7.0 and after](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
 
 12. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
@@ -132,7 +139,7 @@ Instructions
 
 15. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
 
-For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=6.1.0).
+For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0).
 
 
 Miscellaneous
