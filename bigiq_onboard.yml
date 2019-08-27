@@ -7,7 +7,12 @@
     roles:
       - f5devcentral.bigiq_onboard
     tags: onboarding
-     
+
+  - hosts: localhost
+    gather_facts: false
+    tasks:
+      - pause: seconds=120
+
   - hosts: f5-bigiq-cm
     connection: local
     serial: 1

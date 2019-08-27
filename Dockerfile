@@ -6,7 +6,7 @@ RUN apt-get update && \
 
 RUN apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install ansible  
+RUN pip install ansible==2.8.4
 
 COPY ansible.cfg /etc/ansible/ansible.cfg
 
