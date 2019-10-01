@@ -6,7 +6,7 @@ to the point that it can accept configuration.
 
 This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments.
 
-Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0.html) for for details.
+Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-0-0/planning-and-implementing-big-iq-deployment.html) for details.
 
 ![Deployment Diagram](./images/diagram_onboarding.png)
 
@@ -26,11 +26,11 @@ Instructions
 
     - [AWS](https://aws.amazon.com/marketplace/pp/B00KIZG6KA?qid=1495059228012&sr=0-1&ref_=srh_res_product_title)
     - [Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/f5-networks.f5-big-iq?tab=Overview)
-    - [VMware](https://downloads.f5.com/esd/eula.sv?sw=BIG-IQ&pro=big-iq_CM&ver=6.1.0&container=v6.1.0&_ga=2.95373976.584487124.1557161462-1415455721.1549652512)
-    - [Openstack](https://downloads.f5.com/esd/eula.sv?sw=BIG-IQ&pro=big-iq_CM&ver=6.1.0&container=v6.1.0&_ga=2.200814506.584487124.1557161462-1415455721.1549652512)
-    - [HyperV](https://downloads.f5.com/esd/eula.sv?sw=BIG-IQ&pro=big-iq_CM&ver=6.1.0&container=v6.1.0&_ga=2.133130250.584487124.1557161462-1415455721.1549652512)
+    - [VMware](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
+    - [Openstack](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
+    - [HyperV](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
 
-    Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=6.1.0) and follow the setup guide.
+    Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0) and follow the setup guide.
 
     Public Cloud deployments ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
 
@@ -133,11 +133,11 @@ Instructions
 
     Note: Default user will be root but you can use different one (e.g. admin), in this case run: ``./f5_network_connectivity_checks.sh admin admin``
 
-13. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/2.html) (*optional*)
+13. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/en-us/bigiq-7-0-0/big-iq-dcd-sizing/prerequisites.html) (*optional*)
 
-14. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-dcd-sizing-guide-6-0-0/3.html) (*optional*)
+14. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/en-us/bigiq-7-0-0/big-iq-dcd-sizing/resizing-disk-space-on-big-iq-virtual-edition.html) (*optional*)
 
-15. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-device-6-1-0/02.html#concept-3571).
+15. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-0-0/managing-big-ip-devices-from-big-iq/device-discovery-and-basic-management.html).
 
 For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0).
 
