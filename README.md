@@ -78,7 +78,8 @@ Instructions
     Notes:
     
     - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). The 2nd NIC won't be used in this case.
-    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP)
+    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP).
+     - When setting up BIG-IQ HA, the host with haprimary=False needs to be the first listed.
 
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
@@ -156,6 +157,8 @@ Miscellaneous
   bigstart restart restjavad
   ```
 
+  *Note: This parameter added to the orchestrator.conf is NOT preserves during BIG-IQ upgrade.*
+
 Troubleshooting
 ---------------
 
@@ -177,7 +180,7 @@ Troubleshooting
 
 ### Copyright
 
-Copyright 2014-2019 F5 Networks Inc.
+Copyright 2014-2020 F5 Networks Inc.
 
 ### License
 
