@@ -180,7 +180,7 @@ Troubleshooting
 
 ### Copyright
 
-Copyright 2014-2020 F5 Networks Inc.
+Copyright 2020 F5 Networks Inc.
 
 ### License
 
