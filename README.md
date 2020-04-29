@@ -6,7 +6,7 @@ to the point that it can accept configuration.
 
 This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments **version 7.x**.
 
-Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-0-0/planning-and-implementing-big-iq-deployment.html) for details.
+Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-1-0/planning-and-implementing-big-iq-deployment.html) for details.
 
 ![Deployment Diagram](./images/diagram_onboarding.png)
 
@@ -27,7 +27,7 @@ Instructions
     - [AWS](https://aws.amazon.com/marketplace/pp/B00KIZG6KA?qid=1495059228012&sr=0-1&ref_=srh_res_product_title)
     - [Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/f5-networks.f5-big-iq?tab=Overview)
     - [VMware](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
-    - [Openstack](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
+    - [OpenStack](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
     - [HyperV](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
 
     Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0) and follow the setup guide.
@@ -57,9 +57,21 @@ Instructions
     Example for Amazon Linux EC2 instance:
     ```
     sudo yum update -y
-    sudo amazon-linux-extras install docker -y
+    sudo amazon-linux-extras install docker git -y
     sudo service docker start
     sudo yum install git -y
+    docker --version
+    git --version
+    ```
+
+    Example for Azure Ubuntu 18.04 LTS instance:
+    ```
+    sudo apt update
+    sudo apt install docker.io containerd git -y
+    sudo systemctl start docker
+    sudo systemctl enable docker
+    docker --version
+    git --version
     ```
 
     Then, clone the repository:
@@ -96,34 +108,42 @@ Instructions
 
     Ansible version should be displayed.
 
-7. Change default shell on **ALL instances** to bash, and set the admin's password to admin (*AWS only*).
+7. In case you need to change the management IP address(es) (*VMware/OpenStack/HyperV*).
+
+    ```
+    tmsh modify sys global-settings mgmt-dhcp disabled
+    tmsh create sys management-ip x.y.z.w/24
+    tmsh save sys config
+    ```
+
+8. Change default shell on **ALL instances** to bash, and set the admin's password to admin (*AWS only*).
    SSH to each instances and run these tmsh commands (replace the IP addresses with the eth0 internal IP addresses of each instances):
 
     ```
     declare -a ips=("10.1.1.27" "10.1.1.20")
     newpassword="admin"
     privkey="~/.ssh/privatekey.pem"
-    for h in "${ips[@]}"
+    for ip in "${ips[@]}"
     do
-        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h modify auth user admin password $newpassword
-        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h modify auth user admin shell bash
-        ssh -o StrictHostKeyChecking=no -i $privkey admin@$h tmsh save sys config
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$ip modify auth user admin password $newpassword
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$ip modify auth user admin shell bash
+        ssh -o StrictHostKeyChecking=no -i $privkey admin@$ip tmsh save sys config
     done
     ```
 
-8. Execute the BIG-IQ onboarding playbooks.
+9. Execute the BIG-IQ onboarding playbooks.
 
     ```
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard.yml -i /ansible/hosts
     ```
 
-9. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
+10. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
-10. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
+11. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
 
-11. If you have 2 BIG-IQ CMs, go to the BIG-IQ Knowledge Center [for 6.1 and below](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) or [for 7.0 and after](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
+12. If you have 2 BIG-IQ CMs, go to the BIG-IQ Knowledge Center [for 6.1 and below](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) or [for 7.0 and after](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
 
-12. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
+13. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
     ```
     mkdir /shared/scripts
@@ -135,13 +155,13 @@ Instructions
 
     Note: Default user will be root but you can use different one (e.g. admin), in this case run: ``./f5_network_connectivity_checks.sh admin admin``
 
-13. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/en-us/bigiq-7-0-0/big-iq-dcd-sizing/prerequisites.html) (*optional*)
+14. [Determine how much space you need on each of the volumes your BIG-IQ system uses](https://techdocs.f5.com/en-us/bigiq-7-1-0/big-iq-sizing-guidelines/dcd-sizing-guidelines.html#dcd-sizing-guidelines) (*optional*)
 
-14. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/en-us/bigiq-7-0-0/big-iq-dcd-sizing/resizing-disk-space-on-big-iq-virtual-edition.html) (*optional*)
+15. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/en-us/bigiq-7-1-0/big-iq-sizing-guidelines/resizing-disk-space-on-big-iq-virtual-edition.html) (*optional*)
 
-15. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-0-0/managing-big-ip-devices-from-big-iq/device-discovery-and-basic-management.html).
+16. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-1-0/managing-big-ip-devices-from-big-iq/device-discovery-and-basic-management.html).
 
-For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0).
+For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.1.0).
 
 
 Miscellaneous
