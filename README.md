@@ -4,7 +4,7 @@ BIG-IQ Onboarding with Docker and Ansible
 Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
-This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments.
+This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments for using **version 7.x**.
 
 Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-0-0/planning-and-implementing-big-iq-deployment.html) for details.
 
@@ -79,7 +79,8 @@ Instructions
     
     - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). The 2nd NIC won't be used in this case.
     - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP).
-     - When setting up BIG-IQ HA, the host with haprimary=False needs to be the first listed.
+    - When setting up BIG-IQ HA, the host with haprimary=False needs to be the first listed.
+    - Use ``bigiq_onboard_license_key=skipLicense:true`` for BIG-IQ License Manager or BIG-IQ DCD (only >= 7.1).
 
 5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 

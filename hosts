@@ -10,9 +10,9 @@ bigiq-cm-2.lab.local ansible_host=10.192.75.97 discoveryip=10.192.76.97/24 bigiq
 bigiq-cm-1.lab.local ansible_host=10.192.75.96 discoveryip=10.192.76.96/24 bigiq_onboard_node_type=cm haprimary=True bigiq_onboard_license_key=<license1>
 
 [f5_bigiq_dcd]
-bigiq-dcd-1.lab.local ansible_host=10.192.75.98 discoveryip=10.192.76.98/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=<license3>
-bigiq-dcd-2.lab.local ansible_host=10.192.75.99 discoveryip=10.192.76.99/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=<license4>
-bigiq-dcd-3.lab.local ansible_host=10.192.75.100 discoveryip=10.192.76.100/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=<license5>
+bigiq-dcd-1.lab.local ansible_host=10.192.75.98 discoveryip=10.192.76.98/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=skipLicense:true
+bigiq-dcd-2.lab.local ansible_host=10.192.75.99 discoveryip=10.192.76.99/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=skipLicense:true
+bigiq-dcd-3.lab.local ansible_host=10.192.75.100 discoveryip=10.192.76.100/24 bigiq_onboard_node_type=dcd bigiq_onboard_license_key=skipLicense:true
 
 [f5_bigiq:vars]
 bigiq_onboard_new_root_password=default
