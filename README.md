@@ -30,7 +30,7 @@ Instructions
     - [OpenStack](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
     - [HyperV](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
 
-    Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.0.0) and follow the setup guide.
+    Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.1.0) and follow the setup guide.
 
     Public Cloud deployments ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
 
@@ -141,7 +141,7 @@ Instructions
 
 11. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
 
-12. If you have 2 BIG-IQ CMs, go to the BIG-IQ Knowledge Center [for 6.1 and below](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-plan-implement-deploy-6-1-0/04.html) or [for 7.0 and after](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
+12. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
 
 13. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
