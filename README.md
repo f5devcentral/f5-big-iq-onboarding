@@ -4,7 +4,7 @@ BIG-IQ Onboarding with Docker and Ansible
 Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
-This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments for using **version 7.x**.
+This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments **version 7.x**.
 
 Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-0-0/planning-and-implementing-big-iq-deployment.html) for details.
 
@@ -178,6 +178,8 @@ Troubleshooting
     fatal: [bigiq-dcd-1.lab.local]: FAILED! => {"cache_control": "no-store, no-cache, must-revalidate", "changed": false, "connection": "close", "content": "{\"code\":401,\"message\":\"Authentication failed.\",\"originalRequestBody\":\"{\\\"username\\\":\\\"admin\\\", ...hn/login"}
     ...ignoring
     ```
+
+4. If you get the error *"insufficient permissions"*, follow [K13380](https://support.f5.com/csp/article/K13380) to setup NTP on your BIG-IQ instances, then re-run the playbook.
 
 ### Copyright
 
