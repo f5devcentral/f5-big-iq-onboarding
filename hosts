@@ -17,8 +17,8 @@ bigiq-dcd-3.lab.local ansible_host=10.192.75.100 discoveryip=10.192.76.100/24 bi
 [f5_bigiq:vars]
 bigiq_onboard_new_root_password=default
 bigiq_onboard_new_admin_password=admin
-#bigiq_onboard_old_root_password=default
-#bigiq_onboard_old_admin_password=admin
+bigiq_onboard_old_root_password=default
+bigiq_onboard_old_admin_password=admin
 bigiq_onboard_master_passphrase=ThisIsMySuperSecretMasterKey123!
 bigiq_onboard_ntp_servers='["time.google.com"]'
 bigiq_onboard_dns_nameservers='["8.8.8.8"]'

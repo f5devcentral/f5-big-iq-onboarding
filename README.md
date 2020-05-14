@@ -4,13 +4,15 @@ BIG-IQ Onboarding with Docker and Ansible
 Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
-This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments **version 7.x**.
+This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments **version 7.1**.
 
 Consult the [Planning and Implementing a BIG-IQ Centralized Management Deployment](https://techdocs.f5.com/en-us/bigiq-7-1-0/planning-and-implementing-big-iq-deployment.html) for details.
 
 ![Deployment Diagram](./images/diagram_onboarding.png)
 
-Once the inventory hosts file is set with the necessary information (IP, license, dns, ntp, ...), the Ansible playbooks can be launched from your local machine or a remote linux machine, as long as you have network connectivity to the management IP addresses of the targeted BIG-IQ instances to onboard/configure.
+Once the inventory hosts file is set with the necessary information (IP, license, dns, ntp, ...), 
+the Ansible playbooks can be launched from your local machine or a remote linux machine, as long as you 
+have network connectivity to the management IP addresses of the targeted BIG-IQ instances to onboard/configure.
 
 Instructions
 ------------
@@ -24,15 +26,15 @@ Instructions
 
 2. Deploy BIG-IQ instances in your environment.
 
-    - [AWS](https://aws.amazon.com/marketplace/pp/B00KIZG6KA?qid=1495059228012&sr=0-1&ref_=srh_res_product_title)
-    - [Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/f5-networks.f5-big-iq?tab=Overview)
     - [VMware](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
     - [OpenStack](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
     - [HyperV](https://downloads.f5.com/esd/product.jsp?sw=BIG-IQ&pro=big-iq_CM)
+    - [AWS](https://aws.amazon.com/marketplace/pp/B00KIZG6KA?qid=1495059228012&sr=0-1&ref_=srh_res_product_title)
+    - [Azure](https://azuremarketplace.microsoft.com/en-us/marketplace/apps/f5-networks.f5-big-iq?tab=Overview)
 
     Go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.1.0) and follow the setup guide.
 
-    Public Cloud deployments ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
+    **ONLY for Public Cloud deployments** ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
 
     - Deploy the instances with min 2 NICs (**REQUIRED** even if you are not using the 2nd Network Interface)
     - m4.2xlarge (AWS) and Standard_D8_v3 (Azure) are instance type recommended
@@ -49,12 +51,12 @@ Instructions
       | 0-65535 | tcp | 10.192.75.0/24 |
       | All traffic | all | 34.132.183.134/32 |      
   
-3. From a linux machine with access to the BIG-IQ instances.
+3. From a machine with access to the BIG-IQ instances.
 
-    - Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/) ([AWS](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html) or [Azure](https://docs.docker.com/docker-for-azure/))
-    - Install [Git](https://git-scm.com/download/linux)
+    - Install [Docker](https://docs.docker.com/engine/install/)
+    - Install Git ([linux](https://git-scm.com/download/linux) or [windows](https://git-scm.com/download/win))
 
-    Example for Amazon Linux EC2 instance:
+    Example for [Amazon Linux EC2 instance](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html):
     ```
     sudo yum update -y
     sudo amazon-linux-extras install docker git -y
@@ -64,7 +66,7 @@ Instructions
     git --version
     ```
 
-    Example for Azure Ubuntu 18.04 LTS instance:
+    Example for Ubuntu instance:
     ```
     sudo apt update
     sudo apt install docker.io containerd git -y
@@ -74,13 +76,13 @@ Instructions
     git --version
     ```
 
-    Then, clone the repository:
+4. Clone the repository:
 
     ```
     git clone https://github.com/f5devcentral/f5-big-iq-onboarding.git
     ```
 
-4. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, ...).
+5. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, root & admin passwords...).
 
     ```
     cd f5-big-iq-onboarding
@@ -89,18 +91,18 @@ Instructions
 
     Notes:
     
-    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). The 2nd NIC won't be used in this case.
+    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). 
     - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP).
     - When setting up BIG-IQ HA, the host with haprimary=False needs to be the first listed.
-    - Use ``bigiq_onboard_license_key=skipLicense:true`` for BIG-IQ License Manager or BIG-IQ DCD (only >= 7.1).
+    - Use ``bigiq_onboard_license_key=skipLicense:true`` for BIG-IQ DCD (only >= 7.1).
 
-5. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
+6. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
     ```
     sudo docker build -t f5-big-iq-onboarding .
     ```
 
-6. Validate Docker and Ansible are working correctly.
+7. Validate Docker and Ansible are working correctly.
 
     ```
     sudo docker run -t f5-big-iq-onboarding ansible-playbook --version
@@ -108,7 +110,7 @@ Instructions
 
     Ansible version should be displayed.
 
-7. In case you need to change the management IP address(es) (*VMware/OpenStack/HyperV*).
+8. **VMware/OpenStack/HyperV** - In case you need to set/change the management IP address(es).
 
     ```
     tmsh modify sys global-settings mgmt-dhcp disabled
@@ -116,7 +118,7 @@ Instructions
     tmsh save sys config
     ```
 
-8. Change default shell on **ALL instances** to bash, and set the admin's password to admin (*AWS only*).
+9. **AWS only** - Change default shell on all instances to bash, and set the admin's password to admin.
    SSH to each instances and run these tmsh commands (replace the IP addresses with the eth0 internal IP addresses of each instances):
 
     ```
@@ -131,15 +133,13 @@ Instructions
     done
     ```
 
-9. Execute the BIG-IQ onboarding playbooks.
+10. Execute the BIG-IQ onboarding playbooks.
 
     ```
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard.yml -i /ansible/hosts
     ```
 
-10. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
-
-11. Change admin and root default password on all instances, follow [K16275](https://support.f5.com/csp/article/K16275) article.
+11. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
 12. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
 
@@ -167,9 +167,7 @@ For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com
 Miscellaneous
 -------------
 
-- In case you need to restore the BIG-IQ system to factory default settings, follow [K15886](https://support.f5.com/csp/article/K15886) article.
-
-- Disable SSL authentication for SSG or VE creation in VMware (**LAB/POC only**):
+- **LAB/POC only** - Disable SSL authentication for SSG or VE creation in VMware:
 
   ```
   echo >> /var/config/orchestrator/orchestrator.conf
@@ -183,15 +181,15 @@ Miscellaneous
 Troubleshooting
 ---------------
 
-1. If you want to know what is happening when a Playbook runs, provide the **-vvvv** argument to the ansible-playbook command.
+- If you want to know what is happening when a Playbook runs, provide the **-vvvv** argument to the ansible-playbook command.
 
     ```
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard.yml -i /ansible/hosts -vvvv
     ```
 
-2. If you get the error *"Failed to license the device"*, make sure your BIG-IQ instances have access to the F5 license server (Internet).
+- If you get the error *"Failed to license the device"*, make sure your BIG-IQ instances have access to the F5 license server (Internet).
 
-3. Below error can be ignored.
+- Below error can be ignored.
 
     ```
     TASK [bigiq_onboard : Test authentication - old or new credentials] ****************************************************************************************************************
@@ -199,7 +197,13 @@ Troubleshooting
     ...ignoring
     ```
 
-4. If you get the error *"insufficient permissions"*, follow [K13380](https://support.f5.com/csp/article/K13380) to setup NTP on your BIG-IQ instances, then re-run the playbook.
+- If you get the error *"insufficient permissions"*, follow [K13380](https://support.f5.com/csp/article/K13380) to setup NTP on your BIG-IQ instances, then re-run the playbook.
+
+- In case you need to restore the BIG-IQ system to factory default settings, follow [K15886](https://support.f5.com/csp/article/K15886) article.
+
+- In case you need to force remove a DCD association from BIG-IQ, follow [K02014651](https://support.f5.com/csp/article/K02014651) article.
+
+- If you encounter *ModuleNotLicensed:LICENSE INOPERATIVE:Standalone* on the DCD CLI, it can be ignored (when using skipLicense:true).
 
 ### Copyright
 
