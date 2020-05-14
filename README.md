@@ -54,7 +54,7 @@ Instructions
 3. From a machine with access to the BIG-IQ instances.
 
     - Install [Docker](https://docs.docker.com/engine/install/)
-    - Install Git ([linux](https://git-scm.com/download/linux) or [windows](https://git-scm.com/download/win))
+    - Install Git ([Linux](https://git-scm.com/download/linux) or [Windows](https://git-scm.com/download/win))
 
     Example for [Amazon Linux EC2 instance](https://docs.aws.amazon.com/AmazonECS/latest/developerguide/docker-basics.html):
     ```
@@ -82,7 +82,8 @@ Instructions
     git clone https://github.com/f5devcentral/f5-big-iq-onboarding.git
     ```
 
-5. Update the ansible inventory hosts file with the correct information (management IP, self IPs, license, master key, root & admin passwords...).
+5. Edit the ansible inventory hosts file using your favorite editor and enter necessary information 
+   (management IP, self IPs if needed, license, master key, root & admin passwords...).
 
     ```
     cd f5-big-iq-onboarding
@@ -91,10 +92,11 @@ Instructions
 
     Notes:
     
-    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). 
-    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP).
     - When setting up BIG-IQ HA, the host with haprimary=False needs to be the first listed.
     - Use ``bigiq_onboard_license_key=skipLicense:true`` for BIG-IQ DCD (only >= 7.1).
+    - It is not recommended to set ``discoveryip`` for deployment in AWS or Azure (the management IP address will be used automatically if not set). 
+    - ``ansible_host`` in AWS and Azure should be the private IP address assigned to eth0 (**DO NOT** use the public IP).
+
 
 6. Build the Ansible docker images containing the F5 Ansible Galaxy roles.
 
@@ -110,7 +112,7 @@ Instructions
 
     Ansible version should be displayed.
 
-8. **VMware/OpenStack/HyperV** - In case you need to set/change the management IP address(es).
+8. **VMware/OpenStack/HyperV**: In case you need to set/change the management IP address(es).
 
     ```
     tmsh modify sys global-settings mgmt-dhcp disabled
@@ -118,7 +120,7 @@ Instructions
     tmsh save sys config
     ```
 
-9. **AWS only** - Change default shell on all instances to bash, and set the admin's password to admin.
+9. **AWS only**: Change default shell on all instances to bash, and set the admin's password to admin.
    SSH to each instances and run these tmsh commands (replace the IP addresses with the eth0 internal IP addresses of each instances):
 
     ```
@@ -138,6 +140,8 @@ Instructions
     ```
     ./ansible_helper ansible-playbook /ansible/bigiq_onboard.yml -i /ansible/hosts
     ```
+
+    Make sure the playbook PLAY RECAP is not returning any failure. 
 
 11. Open BIG-IQ CM in a web browser by using the management private or public IP address with https, for example: ``https://<bigiq_mgt_ip>``.
 
@@ -167,7 +171,7 @@ For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com
 Miscellaneous
 -------------
 
-- **LAB/POC only** - Disable SSL authentication for SSG or VE creation in VMware:
+- **LAB/POC only**: Disable SSL authentication for SSG or VE creation in VMware:
 
   ```
   echo >> /var/config/orchestrator/orchestrator.conf
