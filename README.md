@@ -37,7 +37,7 @@ Instructions
     **ONLY for Public Cloud deployments** ([AWS](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-amazon-web-services-setup-6-0-0.html)/[Azure](https://techdocs.f5.com/kb/en-us/products/big-iq-centralized-mgmt/manuals/product/big-iq-centralized-management-and-msft-azure-setup-6-0-0.html)):
 
     - Deploy the instances with min 2 NICs (**REQUIRED** even if you are not using the 2nd Network Interface)
-    - m4.2xlarge (AWS) and Standard_D8_v3 (Azure) are instance type recommended
+    - m4.2xlarge (AWS) and Standard_D8_v3 (Azure) are instances type recommended
     - Create EIPs and assign them to the primary interfaces for each CM and DCD instances
     - Make sure you have the private key of the Key Pairs selected
     - Copy your private key in the under the ~/.ssh directory and apply correct permission chmod 600 privatekey.pem in your linux machine you will use to run the tool
