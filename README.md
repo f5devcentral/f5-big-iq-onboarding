@@ -163,7 +163,9 @@ Instructions
 
 15. [Resizing Disk Space on BIG-IQ Virtual Edition](https://techdocs.f5.com/en-us/bigiq-7-1-0/big-iq-sizing-guidelines/resizing-disk-space-on-big-iq-virtual-edition.html) (*optional*)
 
-16. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-1-0/managing-big-ip-devices-from-big-iq/device-discovery-and-basic-management.html).
+16. Import [BIG-IQ AS3 Templates](https://github.com/f5devcentral/f5-big-iq) (*optional*)
+
+17. Start managing BIG-IP devices from BIG-IQ, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-1-0/managing-big-ip-devices-from-big-iq/device-discovery-and-basic-management.html).
 
 For more information, go to the [BIG-IQ Knowledge Center](https://support.f5.com/csp/knowledge-center/software/BIG-IQ?module=BIG-IQ%20Centralized%20Management&version=7.1.0).
 
