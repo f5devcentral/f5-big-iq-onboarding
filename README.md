@@ -5,7 +5,7 @@ Performs series of on-boarding steps to bootstrap a BIG-IQ system
 to the point that it can accept configuration.
 
 <p align="center"><a href="https://www.youtube.com/watch?v=U8RZ_lw19Gs" target=”_blank”>Watch the Video Tutorial<br/>
-<img width="20%" height="20%" src="https://img.youtube.com/vi/U8RZ_lw19Gs/0.jpg"></a></p>
+<img width="60%" height="60%" src="https://img.youtube.com/vi/U8RZ_lw19Gs/0.jpg"></a></p>
 
 This can be used for **lab**, **proof of concept** or **production** BIG-IQ deployments **version 7.1**.
 
