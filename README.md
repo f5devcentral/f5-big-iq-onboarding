@@ -147,6 +147,11 @@ Instructions
 
 12. If you have 2 BIG-IQ CMs, go to the [BIG-IQ Knowledge Center](https://techdocs.f5.com/en-us/bigiq-7-0-0/creating-a-big-iq-high-availability-auto-fail-over-config.html) to configure HA.
 
+    If you run BIG-IQ in public cloud, the root account is disabled on BIG-IQ CM and DCD. Here is how to enable it:
+    ```
+    tmsh modify /sys db systemauth.disablerootlogin value false
+    ```
+
 13. Verify connectivity between BIG-IQ CM, DCD and BIG-IPs. SSH to the BIG-IQ CM primary and execute.
 
     ```
